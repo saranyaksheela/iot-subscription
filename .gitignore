@@ -1,0 +1,45 @@
+# Ignore Maven target directory
+/target/
+
+# Maven wrapper files
+.mvn/
+
+# Eclipse
+.classpath
+.project
+.settings/
+
+# IntelliJ
+.idea/
+*.iml
+
+# VS Code
+.vscode/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Build outputs
+*.class
+*.jar
+
+# Temporary files
+*.tmp
+*.swp
+
+# Environment files
+.env
+
+# Docker build artifacts
+docker/*.tar
+
+# Keep the following project files tracked:
+# - pom.xml
+# - src/
+# - Dockerfile
+# - docker-compose.yml
+# - README.md
