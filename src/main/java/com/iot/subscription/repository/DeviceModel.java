@@ -32,13 +32,25 @@ public class DeviceModel {
         obj.put(Constants.COL_FIRMWARE_VERSION, row.getString(Constants.COL_FIRMWARE_VERSION));
         obj.put(Constants.COL_LOCATION, row.getString(Constants.COL_LOCATION));
         obj.put(Constants.COL_STATUS, row.getString(Constants.COL_STATUS));
-        java.time.OffsetDateTime odt = row.getOffsetDateTime(Constants.COL_CREATED_AT);
-        if (odt != null) obj.put(Constants.COL_CREATED_AT, odt.toString());
-        else {
-            Object ts = row.getValue(Constants.COL_CREATED_AT);
-            if (ts != null) obj.put(Constants.COL_CREATED_AT, ts.toString());
-            else obj.put(Constants.COL_CREATED_AT, (String) null);
+
+        // Robust handling for created_at column: database driver may return OffsetDateTime, LocalDateTime, Timestamp, or String
+        Object created = row.getValue(Constants.COL_CREATED_AT);
+        if (created == null) {
+            obj.put(Constants.COL_CREATED_AT, (String) null);
+        } else if (created instanceof java.time.OffsetDateTime) {
+            obj.put(Constants.COL_CREATED_AT, ((java.time.OffsetDateTime) created).toString());
+        } else if (created instanceof java.time.LocalDateTime) {
+            java.time.LocalDateTime ldt = (java.time.LocalDateTime) created;
+            java.time.ZoneOffset offset = java.time.ZoneId.systemDefault().getRules().getOffset(ldt);
+            obj.put(Constants.COL_CREATED_AT, ldt.atOffset(offset).toString());
+        } else if (created instanceof java.sql.Timestamp) {
+            java.sql.Timestamp ts = (java.sql.Timestamp) created;
+            obj.put(Constants.COL_CREATED_AT, ts.toInstant().toString());
+        } else {
+            // fallback to string representation for any other type
+            obj.put(Constants.COL_CREATED_AT, created.toString());
         }
+
         return obj;
     }
 }
