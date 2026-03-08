@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.iot.subscription.config.DbConfig;
 import com.iot.subscription.repository.DeviceModel;
+import com.iot.subscription.utility.Constants;
 
 import io.vertx.core.Future;
 import io.vertx.core.Promise;
@@ -32,7 +33,7 @@ public class DeviceController {
 
     public Future<List<JsonObject>> fetchDevices() {
         Promise<List<JsonObject>> promise = Promise.promise();
-        String sql = "SELECT id, device_uuid, device_name, device_type, firmware_version, location, status, created_at FROM devices LIMIT 100";
+        String sql = Constants.SQL_FETCH_DEVICES;
         client.query(sql).execute(ar -> {
             if (ar.succeeded()) {
                 RowSet<Row> rows = ar.result();
@@ -50,14 +51,14 @@ public class DeviceController {
 
     public Future<Integer> fetchDevicesCount() {
         Promise<Integer> promise = Promise.promise();
-        String sql = "SELECT COUNT(*) AS cnt FROM devices";
+        String sql = Constants.SQL_COUNT_DEVICES;
         client.query(sql).execute(ar -> {
             if (ar.succeeded()) {
                 RowSet<Row> rows = ar.result();
                 int count = 0;
                 for (Row row : rows) {
                     // getLong may be used then cast
-                    Object v = row.getValue("cnt");
+                    Object v = row.getValue(Constants.SQL_COUNT_COLUMN);
                     if (v instanceof Number) count = ((Number) v).intValue();
                     else count = Integer.parseInt(String.valueOf(v));
                 }

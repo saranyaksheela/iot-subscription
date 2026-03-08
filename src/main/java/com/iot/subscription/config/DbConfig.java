@@ -1,6 +1,7 @@
 package com.iot.subscription.config;
 
 import java.util.Properties;
+import com.iot.subscription.utility.Constants;
 
 public class DbConfig {
     private final String host;
@@ -27,12 +28,12 @@ public class DbConfig {
     public int getHttpPort() { return httpPort; }
 
     public static DbConfig fromProperties(Properties cfg) {
-        String host = getEnv("PG_HOST", cfg.getProperty("pg.host", "localhost"));
-        int port = parseIntSafe(getEnv("PG_PORT", cfg.getProperty("pg.port", "5432")), 5432);
-        String database = getEnv("PG_DATABASE", cfg.getProperty("pg.database", "postgres"));
-        String user = getEnv("PG_USER", cfg.getProperty("pg.user", "postgres"));
-        String password = getEnv("PG_PASSWORD", cfg.getProperty("pg.password", "123"));
-        int httpPort = parseIntSafe(getEnv("HTTP_PORT", cfg.getProperty("http.port", "8080")), 8080);
+        String host = getEnv(Constants.ENV_PG_HOST, cfg.getProperty("pg.host", Constants.DEFAULT_PG_HOST));
+        int port = parseIntSafe(getEnv(Constants.ENV_PG_PORT, cfg.getProperty("pg.port", Integer.toString(Constants.DEFAULT_PG_PORT))), Constants.DEFAULT_PG_PORT);
+        String database = getEnv(Constants.ENV_PG_DATABASE, cfg.getProperty("pg.database", Constants.DEFAULT_PG_DATABASE));
+        String user = getEnv(Constants.ENV_PG_USER, cfg.getProperty("pg.user", Constants.DEFAULT_PG_USER));
+        String password = getEnv(Constants.ENV_PG_PASSWORD, cfg.getProperty("pg.password", Constants.DEFAULT_PG_PASSWORD));
+        int httpPort = parseIntSafe(getEnv(Constants.ENV_HTTP_PORT, cfg.getProperty("http.port", Integer.toString(Constants.DEFAULT_HTTP_PORT))), Constants.DEFAULT_HTTP_PORT);
         return new DbConfig(host, port, database, user, password, httpPort);
     }
 

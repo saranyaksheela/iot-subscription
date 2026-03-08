@@ -5,38 +5,39 @@ import io.vertx.sqlclient.Row;
 
 import java.sql.ResultSet;
 import java.sql.Timestamp;
+import com.iot.subscription.utility.Constants;
 
 public class DeviceModel {
     public static JsonObject fromResultSet(ResultSet rs) throws Exception {
         JsonObject obj = new JsonObject();
-        obj.put("id", rs.getLong("id"));
-        obj.put("device_uuid", rs.getObject("device_uuid") != null ? rs.getObject("device_uuid").toString() : null);
-        obj.put("device_name", rs.getString("device_name"));
-        obj.put("device_type", rs.getString("device_type"));
-        obj.put("firmware_version", rs.getString("firmware_version"));
-        obj.put("location", rs.getString("location"));
-        obj.put("status", rs.getString("status"));
-        Timestamp ts = rs.getTimestamp("created_at");
-        obj.put("created_at", ts != null ? ts.toInstant().toString() : null);
+        obj.put(Constants.COL_ID, rs.getLong(Constants.COL_ID));
+        obj.put(Constants.COL_DEVICE_UUID, rs.getObject(Constants.COL_DEVICE_UUID) != null ? rs.getObject(Constants.COL_DEVICE_UUID).toString() : null);
+        obj.put(Constants.COL_DEVICE_NAME, rs.getString(Constants.COL_DEVICE_NAME));
+        obj.put(Constants.COL_DEVICE_TYPE, rs.getString(Constants.COL_DEVICE_TYPE));
+        obj.put(Constants.COL_FIRMWARE_VERSION, rs.getString(Constants.COL_FIRMWARE_VERSION));
+        obj.put(Constants.COL_LOCATION, rs.getString(Constants.COL_LOCATION));
+        obj.put(Constants.COL_STATUS, rs.getString(Constants.COL_STATUS));
+        Timestamp ts = rs.getTimestamp(Constants.COL_CREATED_AT);
+        obj.put(Constants.COL_CREATED_AT, ts != null ? ts.toInstant().toString() : null);
         return obj;
     }
 
     public static JsonObject fromRow(Row row) {
         JsonObject obj = new JsonObject();
-        obj.put("id", row.getLong("id"));
-        Object uuid = row.getValue("device_uuid");
-        obj.put("device_uuid", uuid != null ? uuid.toString() : null);
-        obj.put("device_name", row.getString("device_name"));
-        obj.put("device_type", row.getString("device_type"));
-        obj.put("firmware_version", row.getString("firmware_version"));
-        obj.put("location", row.getString("location"));
-        obj.put("status", row.getString("status"));
-        java.time.OffsetDateTime odt = row.getOffsetDateTime("created_at");
-        if (odt != null) obj.put("created_at", odt.toString());
+        obj.put(Constants.COL_ID, row.getLong(Constants.COL_ID));
+        Object uuid = row.getValue(Constants.COL_DEVICE_UUID);
+        obj.put(Constants.COL_DEVICE_UUID, uuid != null ? uuid.toString() : null);
+        obj.put(Constants.COL_DEVICE_NAME, row.getString(Constants.COL_DEVICE_NAME));
+        obj.put(Constants.COL_DEVICE_TYPE, row.getString(Constants.COL_DEVICE_TYPE));
+        obj.put(Constants.COL_FIRMWARE_VERSION, row.getString(Constants.COL_FIRMWARE_VERSION));
+        obj.put(Constants.COL_LOCATION, row.getString(Constants.COL_LOCATION));
+        obj.put(Constants.COL_STATUS, row.getString(Constants.COL_STATUS));
+        java.time.OffsetDateTime odt = row.getOffsetDateTime(Constants.COL_CREATED_AT);
+        if (odt != null) obj.put(Constants.COL_CREATED_AT, odt.toString());
         else {
-            Object ts = row.getValue("created_at");
-            if (ts != null) obj.put("created_at", ts.toString());
-            else obj.put("created_at", (String) null);
+            Object ts = row.getValue(Constants.COL_CREATED_AT);
+            if (ts != null) obj.put(Constants.COL_CREATED_AT, ts.toString());
+            else obj.put(Constants.COL_CREATED_AT, (String) null);
         }
         return obj;
     }
