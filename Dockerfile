@@ -1,5 +1,5 @@
 FROM eclipse-temurin:17-jre
 WORKDIR /app
-COPY target/subscription-0.0.1-SNAPSHOT-shaded.jar /app/app.jar
+COPY target/subscription-0.0.1-SNAPSHOT.jar /app/app.jar
 EXPOSE 8080
 ENTRYPOINT ["java", "-jar", "/app/app.jar"]

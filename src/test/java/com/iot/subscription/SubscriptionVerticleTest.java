@@ -7,6 +7,6 @@ public class SubscriptionVerticleTest {
     @Test
     void simpleSanity() {
         // Basic sanity test - JVM loads classes
-        new SubscriptionVerticle();
+        new DeviceSubscriptionVerticle();
     }
 }
